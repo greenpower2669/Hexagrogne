@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Icône FabHexaGrogne V3</title>
+  <desc id="desc">F doré dans un hexagone sombre, accompagné d’une petite termite aux antennes dorées.</desc>
+  <defs>
+    <linearGradient id="bg-v3" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1a2443"/>
+      <stop offset="1" stop-color="#060912"/>
+    </linearGradient>
+    <linearGradient id="gold-v3" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fff0ae"/>
+      <stop offset="0.48" stop-color="#f0c868"/>
+      <stop offset="1" stop-color="#b97e2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg-v3)"/>
+  <path d="M256 48 430 148v216L256 464 82 364V148Z" fill="none" stroke="url(#gold-v3)" stroke-width="24"/>
+  <path d="m256 93 132 76v164l-132 76-132-76V169Z" fill="#0e1425" stroke="#536286" stroke-width="7"/>
+  <path d="M176 171h163v37l-11 11H225v40h92v36l-11 11h-81v86h-49Z" fill="url(#gold-v3)"/>
+  <g fill="none" stroke="#f6d77c" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M344 140c-14-21-26-29-40-31M366 140c14-21 26-29 40-31" stroke-width="8"/>
+    <path d="M342 165l-18 14m45-14 18 14m-45 4-20 7m47-7 20 7" stroke-width="7"/>
+  </g>
+  <g fill="url(#gold-v3)">
+    <circle cx="303" cy="108" r="6"/>
+    <circle cx="407" cy="108" r="6"/>
+    <circle cx="355" cy="147" r="15"/>
+    <ellipse cx="355" cy="174" rx="18" ry="24"/>
+  </g>
+  <circle cx="350" cy="144" r="2.8" fill="#11182b"/>
+  <circle cx="360" cy="144" r="2.8" fill="#11182b"/>
+</svg>

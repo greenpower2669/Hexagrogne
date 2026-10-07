@@ -1,0 +1,49 @@
+name: Android APK
+on:
+  push:
+    branches: ['feature/android-apk-v1']
+  workflow_dispatch:
+    inputs:
+      assets_url:
+        description: URL HTTPS de Hexagrogne-assets.zip en Release
+        required: false
+permissions:
+  contents: read
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+      - name: Récupérer les assets de la Release de Fab
+        env:
+          ASSETS_URL: ${{ inputs.assets_url || vars.HEXAGROGNE_ASSETS_URL }}
+        run: |
+          if [ -z "$ASSETS_URL" ]; then
+            echo 'Définir HEXAGROGNE_ASSETS_URL après dépôt du ZIP en Release.' >&2
+            exit 1
+          fi
+          curl --fail --location --proto '=https' --proto-redir '=https' "$ASSETS_URL" -o /tmp/Hexagrogne-assets.zip
+          python3 scripts/restore-assets.py /tmp/Hexagrogne-assets.zip
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run android:sync
+      - run: gradle -p android assembleDebug --no-daemon
+      - name: Nommer APK
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Hexagrogne-0.1.0-debug.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Hexagrogne-0.1.0-debug
+          path: Hexagrogne-0.1.0-debug.apk

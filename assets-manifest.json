@@ -1,0 +1,151 @@
+{
+  "source": "FabHexaGrogne V3",
+  "commit": "6c557735ed15a863835fbd35d41ef5cff2dd7c36",
+  "files": [
+    {
+      "path": "public/ai-score.wasm",
+      "bytes": 147,
+      "sha256": "13f302aee634575b00091cdf9025bd1b9355916be50b160aa894f3f66d5d9cdc"
+    },
+    {
+      "path": "public/audio/le-petit-robot-qui-dormait.mp3",
+      "bytes": 7824127,
+      "sha256": "7147284859b90bd32f5c378e0932a5c542bd1659038a873d7ef7700edc26e967"
+    },
+    {
+      "path": "public/favicon.ico",
+      "bytes": 32038,
+      "sha256": "f56be1d2c22e81380cf70de99befb28bb8d06c043ba74a1c191cd8519aea2f87"
+    },
+    {
+      "path": "public/favicon.svg",
+      "bytes": 853,
+      "sha256": "cbc18c593ca9a25186ab2a6848662ad1d6601fbbe243b73c542d27909d40dd56"
+    },
+    {
+      "path": "public/file.svg",
+      "bytes": 392,
+      "sha256": "1e0ae4d1a1ddfa36752988647b731e4abf150c414d069ec83c96fb0aaeff0307"
+    },
+    {
+      "path": "public/globe.svg",
+      "bytes": 1036,
+      "sha256": "d051a8c47936990a9085693d307bb7cea1bc1b6d7ed956bcbaacf674f4ec96b9"
+    },
+    {
+      "path": "public/icons/apple-touch-icon.png",
+      "bytes": 33436,
+      "sha256": "af302dc8d9c38305fb1f0eb8d0e4ff105864c0646ebf39f593c7357f26909469"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v2-192.png",
+      "bytes": 36870,
+      "sha256": "3327dc40fcea686eaccff270cbbf85c82c5a1ca5a84e33dfb35dc6e7d6f1376c"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v2-512.png",
+      "bytes": 168026,
+      "sha256": "be27db28c6c049cb28accfdb0b17c067da04a00bfbfe4cac71fd130bc3ae5700"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v2-64.png",
+      "bytes": 7154,
+      "sha256": "9b8dc818f1e9ee81ae0fecdb0e0899df34b9530d6bc20ec9d5b35597f3539d29"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v2-apple-180.png",
+      "bytes": 33436,
+      "sha256": "b77d62f711eb566816769688dfcad5668dca19d513d9d2f5c42a113d365397c3"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v2-maskable-512.png",
+      "bytes": 114269,
+      "sha256": "5c6eef0981bc7ce5470754580aa840ec190dd15c17693d480bced989d9708235"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v3-192.png",
+      "bytes": 17335,
+      "sha256": "b4dded4745782681859f3a9db584960a41d4ec450b941e898ad4a6109f918b2c"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v3-512.png",
+      "bytes": 56372,
+      "sha256": "6d0c87957cc59c41be60a939491e943b4fd6a3dbf9826f0bedbc6b0f113967ce"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v3-64.png",
+      "bytes": 4490,
+      "sha256": "c827569d2a826d3e9fe12476b938ccad8e4dd86f6fcf81961ce30d7a2d51643f"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v3-apple-180.png",
+      "bytes": 15971,
+      "sha256": "462ff87cf4fd34a3b4dbc0184fdd8a27e353444be8ca3755933313334537a159"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v3-maskable-512.png",
+      "bytes": 56372,
+      "sha256": "6d0c87957cc59c41be60a939491e943b4fd6a3dbf9826f0bedbc6b0f113967ce"
+    },
+    {
+      "path": "public/icons/fabhexagrogne-f-v3.svg",
+      "bytes": 1597,
+      "sha256": "ecd5ac79c3facf709f9c87e09b8d1783a96626189a7b819262032a8b66770250"
+    },
+    {
+      "path": "public/icons/favicon-32.png",
+      "bytes": 2872,
+      "sha256": "85555628f7a57a35584f3939be39f258c8f274152c3a3c2ebb2698351363bce9"
+    },
+    {
+      "path": "public/icons/icon-192.png",
+      "bytes": 36870,
+      "sha256": "7755c7640a7b3a8a4350354bef3fe58d28021e2f2099662aebf007f61da03f27"
+    },
+    {
+      "path": "public/icons/icon-512.png",
+      "bytes": 168026,
+      "sha256": "a0ebf5b0e38392db3a34d113451388cbde968b4eadc2da65e2f6b65b5b822111"
+    },
+    {
+      "path": "public/icons/icon-maskable-512.png",
+      "bytes": 114269,
+      "sha256": "d921139ad09aaae45d99f218570331baae55b644b9dbb896cd94bf715014c3cb"
+    },
+    {
+      "path": "public/intro/fabhexagrogne-film.mp4",
+      "bytes": 1094576,
+      "sha256": "a4ef1ff86409a257c13be98ffd057ec1bedd3fa2d08b99239f3c63d8cfde2cd1"
+    },
+    {
+      "path": "public/intro/fabhexagrogne-intro.webp",
+      "bytes": 166624,
+      "sha256": "d4b845a7e867cc90ca6d379e1a88ad1319b9b2a8ee8afe89c31530f9377c4917"
+    },
+    {
+      "path": "public/manifest.webmanifest",
+      "bytes": 950,
+      "sha256": "22d6db20c53998b7d4269524a10b4b1b988d80d91a4ce68fa9d0d18c4dfd177f"
+    },
+    {
+      "path": "public/og.png",
+      "bytes": 2327274,
+      "sha256": "51187701e338bea8f191c32a183a2720c8102de700ac6bf8b189a8639b81bf7f"
+    },
+    {
+      "path": "public/sw.js",
+      "bytes": 4890,
+      "sha256": "675036691f1717c2a675bc592fc84305a1913578de9213beb4c4727e446c67dd"
+    },
+    {
+      "path": "public/window.svg",
+      "bytes": 386,
+      "sha256": "decf1cf7bb22b5c99c4857cfcd5718ce5465c4454166317589c83fc73df74b66"
+    },
+    {
+      "path": "app/fabhexagrogne-ai-league-cycle-172.json",
+      "bytes": 38117,
+      "sha256": "2d2f321ef49a46185cb3b8ae238da2dffb8560d5f08e457599861edc992fe545"
+    }
+  ]
+}

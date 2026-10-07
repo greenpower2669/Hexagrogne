@@ -1,0 +1,1 @@
+{"extends":"./tsconfig.json","include":["app/**/*.ts","app/**/*.tsx","mobile/**/*.ts","mobile/**/*.tsx","capacitor.config.ts","vite.mobile.config.ts"],"exclude":["node_modules","app/layout.tsx","app/chatgpt-auth.ts"]}

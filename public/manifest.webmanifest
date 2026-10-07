@@ -1,0 +1,36 @@
+{
+  "name": "FabHexaGrogne V3",
+  "short_name": "FabHexa V3",
+  "version": "3.1.1-t3",
+  "description": "Jeu de stratégie hexagonal, territorial et évolutif pour 2 à 6 joueurs.",
+  "id": "https://fabhexagrognev3.gnrationsia.chatgpt.site/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#060914",
+  "theme_color": "#0b1020",
+  "lang": "fr-FR",
+  "categories": ["games", "strategy"],
+  "icons": [
+    {
+      "src": "/icons/fabhexagrogne-f-v3-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/fabhexagrogne-f-v3-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/fabhexagrogne-f-v3-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
