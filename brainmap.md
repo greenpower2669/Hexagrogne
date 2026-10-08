@@ -15,3 +15,6 @@
 - mobile/platform.ts : export JSON natif UTF-8 via Filesystem Cache + Share ; export Blob web conservé.
 - Capacitor SystemBars gère les marges natives ; Back ferme les fenêtres puis demande avant quitter.
 - scripts/prepare-android-assets.py : reprend les PNG V3 sans encodage ; workflow Android restaure le ZIP avant build.
+
+- ANDROID-AUDIT.md : neuf points de l’audit source et portage ; assets-manifest.json : inventaire canonique.
+- APK debug universelle minSdk 24 / target 36, versionCode 1 ; assets et bundle autonome embarqués.

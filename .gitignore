@@ -17,3 +17,4 @@ public/*.ico
 public/*.wasm
 android/app/src/main/res/mipmap-*/*.png
 android/gradle/wrapper/gradle-wrapper.jar
+android/.kotlin/

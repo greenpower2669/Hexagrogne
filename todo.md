@@ -1,14 +1,16 @@
-# HEX-ANDROID-001
+# HEX-ANDROID-001 — APK livrée, à valider
 ## Fait
-- Source V3 récupérée et commit fixé ; main GitHub vérifié ; branche dédiée créée.
-- Inventaire et ZIP de 29 assets avec manifeste SHA-256, fichier livré.
-- Sources conservées, entrée Vite autonome compilée, coque Capacitor, partage JSON, Retour et zones système.
-- 109 tests TypeScript exécutés avec succès ; typecheck mobile sans erreur.
+- Source Work V3 récupérée : 6c557735ed15a863835fbd35d41ef5cff2dd7c36 ; neuf modules centraux identiques.
+- Code sur feature/android-apk-v1 ; cinq mémoires, audit, manifeste et build documentés.
+- ZIP livré : 29 fichiers, 12 274 442 octets, CRC et SHA-256 validés ; aucun Base64.
+- Bundle autonome + Worker/WASM ; Capacitor 8.5.3 ; export natif, Retour et marges système ; icône V3.
+- 109 tests TS et test restauration ZIP réussis ; typecheck mobile propre ; revue indépendante intégrée.
+- APK 0.1.0 compilée : 17 809 609 octets, SHA-256 9be1653af1886bb6e9f5e596390b0d0a4b7c9d3daa025d8b1db2ec860300eb8c. Signature v2 vérifiée ; bundle et assets APK comparés à la source finale.
 ## À tester
-- Tests moteur canoniques ; compilation web embarquée et Android.
+- Installation et exécution Android réelles, non effectuées ici.
 ## Bloqué
-- Compilation Gradle : accès réseau Java à résoudre ; SDK 36 et JDK 21 installés.
+- CI GitHub attend HEXAGROGNE_ASSETS_URL après dépôt manuel du ZIP par Fab en Release.
 ## Prochain
-- Terminer compilation APK et synchroniser la branche GitHub.
+- Retour téléphone ; corriger les défauts observés puis préparer AAB/signature Play.
 ## Téléphone à vérifier
-- Intro/audio, cases tactiles, 2–6 équipes, sauvegarde après relance, orientation, zones système, gros texte, entraînement IA, import/export.
+- Intro/audio ; cases tactiles ; 2–6 équipes ; replays/journaux ; sauvegarde après relance ; import/export ; rotation ; zones système ; gros texte ; charge IA.
