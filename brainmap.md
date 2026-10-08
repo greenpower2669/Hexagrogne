@@ -18,3 +18,5 @@
 
 - ANDROID-AUDIT.md : neuf points de l’audit source et portage ; assets-manifest.json : inventaire canonique.
 - APK debug universelle minSdk 24 / target 36, versionCode 1 ; assets et bundle autonome embarqués.
+
+8 octobre, ZIP déposé par Fab à la racine de main (ff05aa4). 29 assets téléchargés et vérifiés conformes. Workflow branche Android : URL raw immuable par défaut, entrées/variable personnalisées conservées. Aucun merge main ni Release.

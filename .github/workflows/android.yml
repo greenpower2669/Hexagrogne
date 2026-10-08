@@ -26,9 +26,9 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.14.3'
-      - name: Récupérer les assets de la Release de Fab
+      - name: Récupérer le ZIP vérifié de Fab
         env:
-          ASSETS_URL: ${{ inputs.assets_url || vars.HEXAGROGNE_ASSETS_URL }}
+          ASSETS_URL: ${{ inputs.assets_url || vars.HEXAGROGNE_ASSETS_URL || 'https://raw.githubusercontent.com/greenpower2669/Hexagrogne/ff05aa4e2f30b1bb5cb2eee899ec9e83168fb7c1/Hexagrogne-assets.zip' }}
         run: |
           if [ -z "$ASSETS_URL" ]; then
             echo 'Définir HEXAGROGNE_ASSETS_URL après dépôt du ZIP en Release.' >&2

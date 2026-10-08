@@ -16,7 +16,7 @@ Prérequis : Node 24, Python 3, JDK 21, SDK Android 36/build-tools 36, Gradle 8.
 Le wrapper JAR et les images générées Android ne sont pas transportés par API/Base64 : Gradle installé suffit ; `gradle -p android wrapper` peut régénérer le wrapper. Les icônes sont restaurées depuis les vrais PNG du ZIP.
 
 ## GitHub Actions
-Après dépôt manuel du ZIP en Release, définir la variable de dépôt `HEXAGROGNE_ASSETS_URL` avec son URL HTTPS puis relancer le workflow. Le workflow produit une APK de test, sans publier de Release ni merger main. L’entrée `assets_url` est également prévue pour un lancement manuel lorsque GitHub rend ce workflow disponible.
+Le ZIP déposé par Fab sur main au commit `ff05aa4` est téléchargé automatiquement via une URL immuable. La variable `HEXAGROGNE_ASSETS_URL` peut remplacer cette source ultérieurement. Le workflow produit une APK de test, sans publier de Release ni merger main. L’entrée `assets_url` est également prévue pour un lancement manuel lorsque GitHub rend ce workflow disponible.
 
 ## Données et téléphone
 Sauvegardes locales propres à l’application : celles du navigateur Work ne migrent pas automatiquement. Import/export IA et corpus conservés ; export natif par feuille de partage. Android 7+ avec WebView récente. Orientations autorisées, zones système gérées nativement. Icône originale V3.

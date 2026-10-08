@@ -9,7 +9,7 @@
 ## À tester
 - Installation et exécution Android réelles, non effectuées ici.
 ## Bloqué
-- CI GitHub attend HEXAGROGNE_ASSETS_URL après dépôt manuel du ZIP par Fab en Release.
+- Aucun blocage assets : ZIP présent dans main ff05aa4, URL immuable configurée dans le workflow. Prochain build CI à observer.
 ## Prochain
 - Retour téléphone ; corriger les défauts observés puis préparer AAB/signature Play.
 ## Téléphone à vérifier

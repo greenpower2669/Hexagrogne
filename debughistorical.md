@@ -8,3 +8,5 @@ Gradle : téléchargement Java direct impossible dans cet environnement ; curl f
 Revue indépendante : Retour historique manquant corrigé (ferme replay et journal) ; configuration générée resynchronisée, SystemBars native confirmé. Gradle installé directement via curl puis proxy explicite pour résolution Maven : configure maintenant les projets, compilation en cours.
 
 Compilation Android obtenue après installation Gradle directe et proxy Maven explicite ; APK produite. Les temporaires d’outillage/logs ont été perdus lors du renouvellement du conteneur ; l’APK et le bundle conservés sont comparés byte-à-byte. Signature v2 RSA/SHA-256 et tous les blocs vérifiés cryptographiquement. Aucun test sur appareil/émulateur ; aucune prétention de validation téléphone.
+
+8 octobre, ZIP déposé par Fab à la racine de main (ff05aa4). 29 assets téléchargés et vérifiés conformes. Workflow branche Android : URL raw immuable par défaut, entrées/variable personnalisées conservées. Aucun merge main ni Release.
