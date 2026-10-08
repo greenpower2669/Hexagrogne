@@ -14,3 +14,11 @@
 - Retour téléphone ; corriger les défauts observés puis préparer AAB/signature Play.
 ## Téléphone à vérifier
 - Intro/audio ; cases tactiles ; 2–6 équipes ; replays/journaux ; sauvegarde après relance ; import/export ; rotation ; zones système ; gros texte ; charge IA.
+
+## CI Android — 9 octobre 2026
+- Échec initial du run 37840843176 : paquet SDK obsolète `tools` demandé implicitement par `android-actions/setup-android@v3`.
+- Correction limitée au workflow : `packages: 'platform-tools'` ; 29 assets et URL ZIP immuable inchangés ; garder l'échec visible.
+- [ ] Contrôler le nouveau run complet : restauration ZIP + 29 SHA-256, `npm ci`, `npm test`, `npm run typecheck`, `npm run android:sync`, Gradle, upload APK.
+- [ ] Relever identifiant run, commit, taille et SHA-256 de l'APK généré par ce run.
+- [ ] Téléphone à vérifier par Fab : installation, intro/audio, tactile, IA 2–6 équipes, sauvegardes/replays, import/export, orientation et lisibilité.
+- [ ] AAB uniquement après validation téléphone ; aucun merge main ni Release.
