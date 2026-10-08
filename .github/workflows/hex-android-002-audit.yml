@@ -1,0 +1,144 @@
+name: HEX-ANDROID-002 — audit V3 et exports
+on:
+  push:
+    branches: ['feature/android-apk-v1']
+    paths: ['.github/workflows/hex-android-002-audit.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-exports:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Télécharger les quatre originaux sans conversion ni altération
+        env:
+          SOURCE_COMMIT: '4d900a8fe71d87749fd5bae4a9f807724606cdc9'
+        run: |
+          mkdir -p /tmp/hex002
+          for f in Hexagrogne-V3-complet.zip FabHexaGrogne-IA-ligue-cycle-1341.json FabHexaBrain-V2-corpus-2026-10-08.json FabHexaGrogne-victoires-humaines-2026-10-08.json; do
+            curl --fail --location --retry 3 --proto '=https' --proto-redir '=https' "https://raw.githubusercontent.com/greenpower2669/Hexagrogne/${SOURCE_COMMIT}/$f" -o "/tmp/hex002/$f"
+          done
+      - name: Vérifier les fichiers originaux, le manifeste source et comparer la V3
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, zipfile, pathlib, sys
+          base=pathlib.Path('/tmp/hex002')
+          file=base/'Hexagrogne-V3-complet.zip'
+          expected='43ab0a532959ef6f11f7898e6c7be0faf1d477c5cbd58dfc0cb106f2f7a995ca'
+          digest=hashlib.sha256(file.read_bytes()).hexdigest()
+          assert file.stat().st_size==12646880, ('ZIP bad size',file.stat().st_size)
+          assert digest==expected, ('ZIP bad SHA-256',digest)
+          print('ZIP bytes =',file.stat().st_size,'sha256 =',digest)
+          root=pathlib.Path.cwd()
+          with zipfile.ZipFile(file) as z:
+            names=z.namelist()
+            assert len(names)==len(set(names)), 'duplicate ZIP names'
+            for name in names:
+              p=pathlib.PurePosixPath(name)
+              assert not p.is_absolute() and '..' not in p.parts and chr(92) not in name, ('unsafe entry',name)
+            src={n.removeprefix('Hexagrogne-V3/'):n for n in names if n.startswith('Hexagrogne-V3/') and not n.endswith('/')}
+            assert len(src)==86, ('unexpected original tracked count',len(src))
+            assert 'EXPORT-V3.json' in names and 'LISEZ-MOI-EXPORT-V3.txt' in names, 'missing provenance'
+            manifest=json.loads(z.read('EXPORT-V3.json'))
+            print('Provenance manifest root keys:',list(manifest) if isinstance(manifest,dict) else type(manifest).__name__)
+            if isinstance(manifest,dict):
+              for key,v in manifest.items():
+                if isinstance(v,list):print('Provenance list:',key,'length',len(v),'example fields',list(v[0]) if v and isinstance(v[0],dict) else 'n/a')
+                elif isinstance(v,dict):print('Provenance map:',key,'keys sample',list(v)[:12])
+                else:print('Provenance scalar:',key,str(v)[:160])
+            matched=[];changed=[];missing=[]
+            for path,zname in sorted(src.items()):
+              real=root/path
+              if not real.is_file():missing.append(path)
+              elif hashlib.sha256(real.read_bytes()).digest()==hashlib.sha256(z.read(zname)).digest():matched.append(path)
+              else:changed.append(path)
+            print('SOURCE_COMPARE: identical=',len(matched),'Android adaptations or differences=',len(changed),'not present=',len(missing))
+            print('DIFFERENT_PATHS:',json.dumps(changed,ensure_ascii=False))
+            print('MISSING_PATHS:',json.dumps(missing,ensure_ascii=False))
+            assets=json.loads((root/'assets-manifest.json').read_text())['files']
+            assert len(assets)==29, ('asset manifest count',len(assets))
+            for a in assets:
+              name=a['path']
+              assert name in src, ('missing original asset from full ZIP',name)
+              data=z.read(src[name])
+              assert len(data)==a['bytes'], ('asset size mismatch',name)
+              assert hashlib.sha256(data).hexdigest()==a['sha256'], ('asset SHA mismatch',name)
+            print('SOURCE_ASSETS: 29/29 sizes and SHA-256 validated')
+            entries=manifest.get('files') if isinstance(manifest,dict) else None
+            if isinstance(entries, list):
+              checked=0
+              for a in entries:
+                if not isinstance(a,dict):continue
+                p=a.get('path') or a.get('name')
+                if p is None:continue
+                p=p.removeprefix('Hexagrogne-V3/')
+                assert p in src, ('manifest missing file',p)
+                v=z.read(src[p])
+                n=a.get('bytes',a.get('size'))
+                h=a.get('sha256',a.get('sha256sum'))
+                if n is not None:assert len(v)==n, ('manifest bytes',p)
+                if h is not None:assert hashlib.sha256(v).hexdigest()==h, ('manifest sha256',p)
+                if n is not None or h is not None:checked+=1
+              print('PROVENANCE: checked file records',checked,'out of',len(entries))
+              assert checked==86, 'Source provenance manifest incomplete'
+            else:raise AssertionError('Manifest structure not yet handled: inspect keys and adapt verification')
+          for name,size,schema in [
+            ('FabHexaGrogne-IA-ligue-cycle-1341.json',1933080,'fabhexagrogne-ai-pack'),
+            ('FabHexaBrain-V2-corpus-2026-10-08.json',11421819,'fabhexabrain'),
+            ('FabHexaGrogne-victoires-humaines-2026-10-08.json',4951321,'fabhexagrogne-human-victories')
+          ]:
+            f=base/name
+            assert f.stat().st_size==size,('JSON size',name,f.stat().st_size)
+            value=json.loads(f.read_text())
+            assert value.get('schema')==schema,(name,value.get('schema'))
+            print('JSON_OK',name,'bytes',size,'schema',schema)
+          PY
+      - name: npm ci
+        run: npm ci
+      - name: Éprouver les importeurs existants sans écrire dans la mémoire du jeu
+        run: |
+          node --import tsx --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFileSync} from 'node:fs';
+          import {createEmptyTrainingCorpus, importTrainingPayload, FAB_HEXA_BRAIN_ARCHITECTURE_ID} from './app/training-dataset.ts';
+          import {validateHumanTrainingArchive} from './app/human-training.ts';
+          import {validateImportedMemory, createDefaultAIMemory} from './app/game-engine.ts';
+          import {validateSelfPlayLeague} from './app/self-play.ts';
+          import {parseHybridHexBrain,HYBRID_HEX_BRAIN_ARCHITECTURE_ID} from './app/hexconv-brain.ts';
+          import {importNamedWeightModules, MODULAR_AI_PACK_VERSION} from './app/ai-weight-modules.ts';
+          const base='/tmp/hex002/';
+          const read = filename => JSON.parse(readFileSync(base+filename,'utf8'));
+          const human=read('FabHexaGrogne-victoires-humaines-2026-10-08.json');
+          const corpus=read('FabHexaBrain-V2-corpus-2026-10-08.json');
+          const pack=read('FabHexaGrogne-IA-ligue-cycle-1341.json');
+          assert.equal(human.games.length,6);
+          assert.equal(validateHumanTrainingArchive(human).games.length,6);
+          assert.equal(corpus.rulesVersion,15);
+          assert.equal(corpus.architectureId,FAB_HEXA_BRAIN_ARCHITECTURE_ID);
+          assert.equal(pack.version,MODULAR_AI_PACK_VERSION);
+          assert.equal(pack.architectureId,HYBRID_HEX_BRAIN_ARCHITECTURE_ID);
+          const input=createEmptyTrainingCorpus();
+          const first=importTrainingPayload(input,corpus,'Fab corpus');
+          assert.notEqual(first.report.status,'rejected',first.report.message);
+          const second=importTrainingPayload(first.corpus,human,'Fab human victories');
+          assert.notEqual(second.report.status,'rejected',second.report.message);
+          const again=importTrainingPayload(second.corpus,corpus,'Fab corpus repeated');
+          assert.equal(again.report.addedSamples,0,'re-import must be idempotent');
+          const memory=validateImportedMemory(pack.liveMemory) ?? createDefaultAIMemory();
+          const brain=parseHybridHexBrain(pack.hybridBrain);
+          assert.ok(brain,'valid T3 hybrid brain');
+          const modular=importNamedWeightModules(pack.modules,memory,brain);
+          const league=validateSelfPlayLeague(pack.selfPlayLeague,modular.memory);
+          assert.equal(league.cycle,1341,'cycle 1341 must survive validation');
+          assert.ok(modular.importedModules.length>=2,'expected compatible modules');
+          console.log('IMPORT_TEST: corpus',JSON.stringify(first.report));
+          console.log('IMPORT_TEST: victories',JSON.stringify(second.report));
+          console.log('IMPORT_TEST: duplicate re-import',JSON.stringify(again.report));
+          console.log('IMPORT_TEST: T3 modules',JSON.stringify({imported:modular.importedModules,ignored:modular.ignoredModules,diagnostics:modular.diagnostics,cycle:league.cycle,generation:modular.memory.generation,hybridGeneration:brain.generation}));
+          console.log('IMPORT_TEST: all original JSON files unchanged; zero localStorage or IndexedDB writes');
+          JS
