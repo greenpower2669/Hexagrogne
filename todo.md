@@ -18,7 +18,9 @@
 ## CI Android — 9 octobre 2026
 - Échec initial du run 37840843176 : paquet SDK obsolète `tools` demandé implicitement par `android-actions/setup-android@v3`.
 - Correction limitée au workflow : `packages: 'platform-tools'` ; 29 assets et URL ZIP immuable inchangés ; garder l'échec visible.
-- [ ] Contrôler le nouveau run complet : restauration ZIP + 29 SHA-256, `npm ci`, `npm test`, `npm run typecheck`, `npm run android:sync`, Gradle, upload APK.
-- [ ] Relever identifiant run, commit, taille et SHA-256 de l'APK généré par ce run.
+- [x] Run 37852407591 réussi : ZIP 29 SHA-256, `npm ci`, 109 tests, typecheck, Capacitor sync, Gradle assembleDebug et upload artefact.
+- [x] Commit applicatif 35924958624beaf0da50510ba7a4e00bc75058a0 ; APK du run #37852407591 : 17 422 098 octets, SHA-256 14c23ac71c22a090ccee3e8442fdb63ea1a37e86ae436f226d40bee42f4fdd17.
 - [ ] Téléphone à vérifier par Fab : installation, intro/audio, tactile, IA 2–6 équipes, sauvegardes/replays, import/export, orientation et lisibilité.
 - [ ] AAB uniquement après validation téléphone ; aucun merge main ni Release.
+
+9 octobre 2026 — GitHub Actions run #37852407591 (commit 35924958624beaf0da50510ba7a4e00bc75058a0) : SUCCESS. Étapes ZIP (29 assets, tailles et SHA-256), npm ci, 109 tests/109, typecheck, Capacitor sync, Gradle assembleDebug, renommage et upload artefact toutes GREEN. APK CI : Hexagrogne-0.1.0-debug.apk, 17 422 098 octets, SHA-256 14c23ac71c22a090ccee3e8442fdb63ea1a37e86ae436f226d40bee42f4fdd17. Artefact : https://github.com/greenpower2669/Hexagrogne/actions/runs/37852407591/artifacts/11582891444 . APK distincte de l'ancien build local. Installation et test du gameplay sur téléphone en attente de Fab. Aucune Release, aucun merge main.
