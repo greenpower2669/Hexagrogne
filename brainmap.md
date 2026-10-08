@@ -26,3 +26,5 @@
 
 - scripts/stage-fab-exports.py : contrôle SHA des trois exports Fab prélevés sur main figée, et copie uniquement au build dans public/fab-exports/ puis bundle Capacitor ; scripts/restore-assets.py reste exclusivement pour les 29 médias.
 - app/fab-exports.ts : lecteur local validé par schéma/version ; app/ai-import-backup.ts : garde de snapshot IA ; deux boutons explicites ajoutés au panneau IA et apprentissage, sans auto-import.
+
+9 octobre 2026 — HEX-ANDROID-002 CODE VALIDÉ : commit d1c4bddd1b51be8158e67c5ad6d7a5ade1d856f3, GitHub Actions https://github.com/greenpower2669/Hexagrogne/actions/runs/37857671752 SUCCESS ; 111/111 tests, typecheck, sync Capacitor, 29 assets validés et 3 exports Fab présents dans le bundle Android avec SHA-256 originaux, Gradle BUILD SUCCESSFUL. APK Hexagrogne-0.1.1-debug.apk, 18 904 566 octets, SHA-256 5761c81521b152c4789dfe3a6b817ca46e8f8e8da0d1e078cb900a71a9513de4. Artifact https://github.com/greenpower2669/Hexagrogne/actions/runs/37857671752/artifacts/11585041977 . Téléphone à vérifier : bouton corpus/880 décisions + bouton pack IA 1341 et rollback ; aucune installation réelle testée, pas de merge main / Release / AAB.

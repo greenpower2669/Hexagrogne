@@ -48,11 +48,13 @@
 - [x] Actions séparées et volontaires : données corpus/humaines vers IndexedDB ; pack IA 1341 avec confirmation et protection de rollback.
 - [x] Correctif risque QuotaExceededError/backup écrasé ; aucun changement de gameplay ; version APK 0.1.1/code 2.
 ### À tester
-- [ ] CI : npm test, typecheck, Capacitor sync, assembleDebug, vérifier les trois JSON dans APK et SHA-256 de sortie.
-- [ ] Imports Android réels, doublons, fermeture/redémarrage, annulation restauration pack IA, manque de stockage.
+- [x] CI : 111/111 tests, typecheck, Capacitor sync, Gradle et upload APK : run 37857671752 GREEN. Trois JSON inspectés à l'intérieur de l'APK ; ZIP/CRC OK.
+- [ ] Téléphone à vérifier : imports et doublons, fermeture/redémarrage, annulation/restauration pack IA, stockage saturé, régressions tactile/audio.
 ### Bloqué
 - Aucun choix automatique des poids : adoption du pack 1341 reste soumise au consentement de Fab.
 ### Prochain
 - Corriger toute régression CI, livrer APK 0.1.1 et SHA ; après validation téléphone préparer AAB.
 ### Téléphone à vérifier
 - Toutes les fonctions V3 plus les deux nouveaux boutons offline, sauvegardes locales, rollback, tactile et accessibilité.
+
+9 octobre 2026 — HEX-ANDROID-002 CODE VALIDÉ : commit d1c4bddd1b51be8158e67c5ad6d7a5ade1d856f3, GitHub Actions https://github.com/greenpower2669/Hexagrogne/actions/runs/37857671752 SUCCESS ; 111/111 tests, typecheck, sync Capacitor, 29 assets validés et 3 exports Fab présents dans le bundle Android avec SHA-256 originaux, Gradle BUILD SUCCESSFUL. APK Hexagrogne-0.1.1-debug.apk, 18 904 566 octets, SHA-256 5761c81521b152c4789dfe3a6b817ca46e8f8e8da0d1e078cb900a71a9513de4. Artifact https://github.com/greenpower2669/Hexagrogne/actions/runs/37857671752/artifacts/11585041977 . Téléphone à vérifier : bouton corpus/880 décisions + bouton pack IA 1341 et rollback ; aucune installation réelle testée, pas de merge main / Release / AAB.
