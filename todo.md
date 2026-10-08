@@ -24,3 +24,20 @@
 - [ ] AAB uniquement après validation téléphone ; aucun merge main ni Release.
 
 9 octobre 2026 — GitHub Actions run #37852407591 (commit 35924958624beaf0da50510ba7a4e00bc75058a0) : SUCCESS. Étapes ZIP (29 assets, tailles et SHA-256), npm ci, 109 tests/109, typecheck, Capacitor sync, Gradle assembleDebug, renommage et upload artefact toutes GREEN. APK CI : Hexagrogne-0.1.0-debug.apk, 17 422 098 octets, SHA-256 14c23ac71c22a090ccee3e8442fdb63ea1a37e86ae436f226d40bee42f4fdd17. Artefact : https://github.com/greenpower2669/Hexagrogne/actions/runs/37852407591/artifacts/11582891444 . APK distincte de l'ancien build local. Installation et test du gameplay sur téléphone en attente de Fab. Aucune Release, aucun merge main.
+
+# HEX-ANDROID-002 — 9 octobre 2026
+## Fait
+- [x] HEAD main et branche Android vérifiés, sources récentes préservées.
+- [x] ZIP V3 complet : 12 646 880 octets, SHA-256 conforme, 86/86 inventoriés/tailles/empreintes, 29/29 assets originaux identiques.
+- [x] Comparaison source : 45 identiques ; 6 modifiés ; 35 non suivis dans la branche Android (dont assets restaurables). Pas d'écrasement avec la source web.
+- [x] Trois originaux JSON identifiés ; importeurs réels testés dans audit GitHub Actions 37855459563 : corpus 640, humains 240, modules Core/Queen Escape/HexConv et ligue 1341 ; re-import corpus 0 ajout/640 doublons.
+- [x] Aucun changement applicatif nécessaire : référence APK 0.1.0 de CI 37852407591 inchangée ; compatibilité V3 package 3.1.1-t3 / règles 15 maintenue.
+## À tester
+- [ ] Tester sur téléphone les boutons d'import de deux JSON d'entraînement et du pack IA (après export de sauvegarde de Fab) ; confirmer affichages et persistance IndexedDB/localStorage.
+- [ ] Vérifier l'espace libre et la restauration de la sauvegarde IA avant d'appliquer le pack 1341 : backup d'import existant susceptible d'échouer si localStorage plein.
+## Bloqué
+- Aucun blocage de structure JSON/ZIP ; adoption des nouveaux poids actifs non autorisée implicitement (action volontaire de Fab requise pour préserver son cerveau existant).
+## Prochain
+- Guider l'import manuel ; enregistrer les retours téléphone ; décider d'un éventuel durcissement de la sauvegarde d'import avant évolution de l'interface ; AAB après validation téléphone uniquement.
+## Téléphone à vérifier
+- Installation, vidéo/son, cases tactiles, IA 2–6 joueurs, règles V3, sauvegardes/replays, import/export JSON, rotation, lisibilité/zoom, zones système. Aucun test réel téléphone par l'assistant.

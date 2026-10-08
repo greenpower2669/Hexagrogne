@@ -20,3 +20,6 @@
 - APK debug universelle minSdk 24 / target 36, versionCode 1 ; assets et bundle autonome embarqués.
 
 8 octobre, ZIP déposé par Fab à la racine de main (ff05aa4). 29 assets téléchargés et vérifiés conformes. Workflow branche Android : URL raw immuable par défaut, entrées/variable personnalisées conservées. Aucun merge main ni Release.
+
+- HEX-ANDROID-002 : `main` contient le ZIP complet V3 et les JSON originaux (noms exacts dans `docs/HEX-ANDROID-002.md`). Audit dédié : `.github/workflows/hex-android-002-audit.yml` télécharge les originaux à SHA `4d900a8f...`, contrôle ZIP, provenance (86 chemins/tailles/SHA-256), assets (29), JSON et importeurs réels, sans les incorporer à l'APK.
+- Import corpus V2 et victoires humaines : `app/training-dataset.ts::importTrainingPayload` via panneau « Importer des fichiers », dédoublonnage puis entraînement HexConv T3 volontaire ; import pack IA T3 : `app/fab-hexa-game.tsx::importAi`, `app/ai-weight-modules.ts::importNamedWeightModules`, `app/self-play.ts::validateSelfPlayLeague`, bouton « Importer des modules ». Sources réseau non nécessaires au gameplay offline, sauvegardes existantes conservées jusqu'à action utilisateur.
