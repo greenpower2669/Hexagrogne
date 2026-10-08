@@ -38,14 +38,24 @@ jobs:
           fi
           curl --fail --location --proto '=https' --proto-redir '=https' "$ASSETS_URL" -o /tmp/Hexagrogne-assets.zip
           python3 scripts/restore-assets.py /tmp/Hexagrogne-assets.zip
+      - name: Intégrer les trois exports Fab V3 dans le bundle hors-ligne
+        run: |
+          mkdir -p /tmp/fab-v3-exports
+          for file in FabHexaGrogne-IA-ligue-cycle-1341.json FabHexaBrain-V2-corpus-2026-10-08.json FabHexaGrogne-victoires-humaines-2026-10-08.json; do
+            curl --fail --location --retry 3 --proto '=https' --proto-redir '=https' "https://raw.githubusercontent.com/greenpower2669/Hexagrogne/4d900a8fe71d87749fd5bae4a9f807724606cdc9/$file" -o "/tmp/fab-v3-exports/$file"
+          done
+          python3 scripts/stage-fab-exports.py /tmp/fab-v3-exports
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
       - run: npm run android:sync
+      - name: Contrôler la présence des exports dans l'application Android
+        run: |
+          python3 scripts/stage-fab-exports.py /tmp/fab-v3-exports --check-packaged
       - run: gradle -p android assembleDebug --no-daemon
       - name: Nommer APK
-        run: cp android/app/build/outputs/apk/debug/app-debug.apk Hexagrogne-0.1.0-debug.apk
+        run: cp android/app/build/outputs/apk/debug/app-debug.apk Hexagrogne-0.1.1-debug.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: Hexagrogne-0.1.0-debug
-          path: Hexagrogne-0.1.0-debug.apk
+          name: Hexagrogne-0.1.1-debug
+          path: Hexagrogne-0.1.1-debug.apk

@@ -23,3 +23,6 @@
 
 - HEX-ANDROID-002 : `main` contient le ZIP complet V3 et les JSON originaux (noms exacts dans `docs/HEX-ANDROID-002.md`). Audit dédié : `.github/workflows/hex-android-002-audit.yml` télécharge les originaux à SHA `4d900a8f...`, contrôle ZIP, provenance (86 chemins/tailles/SHA-256), assets (29), JSON et importeurs réels, sans les incorporer à l'APK.
 - Import corpus V2 et victoires humaines : `app/training-dataset.ts::importTrainingPayload` via panneau « Importer des fichiers », dédoublonnage puis entraînement HexConv T3 volontaire ; import pack IA T3 : `app/fab-hexa-game.tsx::importAi`, `app/ai-weight-modules.ts::importNamedWeightModules`, `app/self-play.ts::validateSelfPlayLeague`, bouton « Importer des modules ». Sources réseau non nécessaires au gameplay offline, sauvegardes existantes conservées jusqu'à action utilisateur.
+
+- scripts/stage-fab-exports.py : contrôle SHA des trois exports Fab prélevés sur main figée, et copie uniquement au build dans public/fab-exports/ puis bundle Capacitor ; scripts/restore-assets.py reste exclusivement pour les 29 médias.
+- app/fab-exports.ts : lecteur local validé par schéma/version ; app/ai-import-backup.ts : garde de snapshot IA ; deux boutons explicites ajoutés au panneau IA et apprentissage, sans auto-import.

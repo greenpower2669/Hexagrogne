@@ -41,3 +41,18 @@
 - Guider l'import manuel ; enregistrer les retours téléphone ; décider d'un éventuel durcissement de la sauvegarde d'import avant évolution de l'interface ; AAB après validation téléphone uniquement.
 ## Téléphone à vérifier
 - Installation, vidéo/son, cases tactiles, IA 2–6 joueurs, règles V3, sauvegardes/replays, import/export JSON, rotation, lisibilité/zoom, zones système. Aucun test réel téléphone par l'assistant.
+
+## HEX-ANDROID-002 — implémentation exports embarqués V3
+### Fait (code proposé)
+- [x] Trois JSON Fab originaux récupérés sur commit immuable et contrôlés à la compilation (taille, SHA blob Git, version/schéma) avant inclusion hors connexion.
+- [x] Actions séparées et volontaires : données corpus/humaines vers IndexedDB ; pack IA 1341 avec confirmation et protection de rollback.
+- [x] Correctif risque QuotaExceededError/backup écrasé ; aucun changement de gameplay ; version APK 0.1.1/code 2.
+### À tester
+- [ ] CI : npm test, typecheck, Capacitor sync, assembleDebug, vérifier les trois JSON dans APK et SHA-256 de sortie.
+- [ ] Imports Android réels, doublons, fermeture/redémarrage, annulation restauration pack IA, manque de stockage.
+### Bloqué
+- Aucun choix automatique des poids : adoption du pack 1341 reste soumise au consentement de Fab.
+### Prochain
+- Corriger toute régression CI, livrer APK 0.1.1 et SHA ; après validation téléphone préparer AAB.
+### Téléphone à vérifier
+- Toutes les fonctions V3 plus les deux nouveaux boutons offline, sauvegardes locales, rollback, tactile et accessibilité.

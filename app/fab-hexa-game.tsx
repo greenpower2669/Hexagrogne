@@ -2,6 +2,8 @@
 
 import { isNative, downloadJson } from "../mobile/platform";
 import { App } from "@capacitor/app";
+import { loadBundledFabExport, FAB_EXPORT_FILES } from "./fab-exports";
+import { ensureAiImportBackup } from "./ai-import-backup";
 
 import {
   Component,
@@ -1470,6 +1472,7 @@ export default function FabHexaGame() {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent>();
   const [installed, setInstalled] = useState(false);
   const [hasAiImportBackup, setHasAiImportBackup] = useState(false);
+  const [fabExportsBusy, setFabExportsBusy] = useState(false);
   const [selfPlayWorkerStatus, setSelfPlayWorkerStatus] =
     useState<SelfPlayWorkerStatus>("starting");
   const [newConfig, setNewConfig] = useState<NewGameConfig>({
@@ -3042,22 +3045,24 @@ export default function FabHexaGame() {
       league: selfPlayLeagueRef.current,
       hybridBrain: serializeHybridHexBrain(hybridBrainRef.current),
     };
-    try {
-      localStorage.setItem(AI_IMPORT_BACKUP_KEY, JSON.stringify(backup));
-      setHasAiImportBackup(true);
-    } catch {
-      // A full local store must not prevent a voluntary import.
+    // Jamais d'import si la sauvegarde restaurable ne peut pas être écrite.
+    // Ne pas écraser une sauvegarde déjà conservée avant un premier import.
+    if (!ensureAiImportBackup(localStorage, AI_IMPORT_BACKUP_KEY, backup)) {
+      throw new Error(
+        "Import interrompu : sauvegarde IA impossible ou ancienne sauvegarde incomplète. Exportez ou restaurez d’abord le cerveau local.",
+      );
     }
+    setHasAiImportBackup(true);
   };
 
   const openAiImport = () => {
     importInput.current?.click();
   };
 
-  const importAi = async (file?: File) => {
-    if (!file) return;
+  const importAi = async (file?: File, embedded?: unknown) => {
+    if (!file && embedded === undefined) return;
     try {
-      const parsed = JSON.parse(await file.text());
+      const parsed = embedded === undefined ? JSON.parse(await file!.text()) : embedded;
       const isLeaguePack = parsed?.schema === "fabhexagrogne-ai-pack";
       const diagnostics: string[] = [];
       const hasNamedModules = Boolean(
@@ -3141,6 +3146,22 @@ export default function FabHexaGame() {
     }
   };
 
+  const importBundledFabAi = async () => {
+    if (fabExportsBusy) return;
+    if (!window.confirm(
+      "Charger le cerveau de Fab (ligue cycle 1341) ? Les poids actifs seront remplacés après sauvegarde, sans toucher aux parties. Exportez auparavant votre cerveau actuel. Continuer ?",
+    )) return;
+    setFabExportsBusy(true);
+    try {
+      const payload = await loadBundledFabExport("ai");
+      await importAi(undefined, payload);
+    } catch (error) {
+      setToast(error instanceof Error ? error.message : "Export IA Fab indisponible");
+    } finally {
+      setFabExportsBusy(false);
+    }
+  };
+
   const persistTrainingCorpus = async (
     nextCorpus: FabHexaBrainCorpus,
     message: string,
@@ -3207,6 +3228,44 @@ export default function FabHexaGame() {
       setToast(added ? summary : lastRejection || summary);
     } finally {
       if (trainingImportInput.current) trainingImportInput.current.value = "";
+    }
+  };
+
+  const importBundledFabTraining = async () => {
+    if (fabExportsBusy || !trainingCorpusReady) return;
+    setFabExportsBusy(true);
+    setTrainingCorpusStatus("Lecture des deux archives Fab embarquées…");
+    try {
+      let nextCorpus = trainingCorpus;
+      let added = 0;
+      let duplicates = 0;
+      for (const kind of ["corpus", "human"] as const) {
+        const payload = await loadBundledFabExport(kind);
+        const result = importTrainingPayload(
+          nextCorpus,
+          payload,
+          FAB_EXPORT_FILES[kind],
+        );
+        if (result.report.status === "rejected") {
+          throw new Error(result.report.message);
+        }
+        nextCorpus = result.corpus;
+        added += result.report.addedSamples;
+        duplicates += result.report.duplicateSamples;
+      }
+      // Atomicité fonctionnelle : n'activer le nouveau corpus qu'après
+      // une persistance réussie. Aucune modification des poids IA.
+      await saveTrainingCorpus(nextCorpus);
+      setTrainingCorpus(nextCorpus);
+      const message = `Exports Fab : ${added} décision(s) ajoutée(s), ${duplicates} doublon(s). Cerveau actif inchangé.`;
+      setTrainingCorpusStatus(message);
+      setToast(message);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Import Fab impossible";
+      setTrainingCorpusStatus("Import Fab interrompu : " + message);
+      setToast("Import Fab interrompu : " + message);
+    } finally {
+      setFabExportsBusy(false);
     }
   };
 
@@ -4311,6 +4370,13 @@ export default function FabHexaGame() {
                     </button>
                     <button
                       type="button"
+                      disabled={!trainingCorpusReady || fabExportsBusy}
+                      onClick={() => void importBundledFabTraining()}
+                    >
+                      Ajouter les exports Fab · 880 décisions
+                    </button>
+                    <button
+                      type="button"
                       disabled={!trainingCorpusReady}
                       onClick={() => void addLocalTrainingData()}
                     >
@@ -4366,7 +4432,7 @@ export default function FabHexaGame() {
                     <strong>Cycle {selfPlayLeague.cycle} · génération {memory.generation}</strong>
                   </div>
                   <p className="ai-seed-proof">
-                    Graine T2 intégrée · ligue cycle {T2_IMPORTED_LEAGUE_META.cycle} · {T2_IMPORTED_LEAGUE_META.positionsEvaluated.toLocaleString("fr-FR")} positions évaluées. Une ligue locale plus avancée reste prioritaire.
+                    Graine T2 intégrée · ligue cycle {T2_IMPORTED_LEAGUE_META.cycle} · {T2_IMPORTED_LEAGUE_META.positionsEvaluated.toLocaleString("fr-FR")} positions évaluées. Les exports V3 de Fab sont disponibles hors connexion : leur chargement est volontaire et ne remplace pas silencieusement le cerveau actif.
                   </p>
                   <p>
                     L’export T3 utilise des modules nommés et versionnés : Core 14 poids, Queen Escape et HexConv. Un import ancien ou partiel ne remplace que les modules compatibles présents ; tout module absent, inconnu ou incompatible laisse les poids locaux correspondants intacts.
@@ -4377,6 +4443,13 @@ export default function FabHexaGame() {
                       onClick={openAiImport}
                     >
                       Importer des modules
+                    </button>
+                    <button
+                      type="button"
+                      disabled={fabExportsBusy}
+                      onClick={() => void importBundledFabAi()}
+                    >
+                      Charger le cerveau Fab · cycle 1341
                     </button>
                     <button
                       type="button"
