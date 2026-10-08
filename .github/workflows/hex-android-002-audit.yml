@@ -45,6 +45,9 @@ jobs:
             assert len(src)==86, ('unexpected original tracked count',len(src))
             assert 'EXPORT-V3.json' in names and 'LISEZ-MOI-EXPORT-V3.txt' in names, 'missing provenance'
             manifest=json.loads(z.read('EXPORT-V3.json'))
+            assert manifest.get('source_commit')=='6c557735ed15a863835fbd35d41ef5cff2dd7c36', 'wrong source commit'
+            assert manifest.get('package_version')=='3.1.1-t3', 'wrong package version'
+            assert manifest.get('source_file_count')==86, 'wrong source file count'
             print('Provenance manifest root keys:',list(manifest) if isinstance(manifest,dict) else type(manifest).__name__)
             if isinstance(manifest,dict):
               for key,v in manifest.items():
@@ -79,7 +82,7 @@ jobs:
                 p=p.removeprefix('Hexagrogne-V3/')
                 assert p in src, ('manifest missing file',p)
                 v=z.read(src[p])
-                n=a.get('bytes',a.get('size'))
+                n=a.get('bytes',a.get('size',a.get('size_bytes')))
                 h=a.get('sha256',a.get('sha256sum'))
                 if n is not None:assert len(v)==n, ('manifest bytes',p)
                 if h is not None:assert hashlib.sha256(v).hexdigest()==h, ('manifest sha256',p)
